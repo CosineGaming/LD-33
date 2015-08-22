@@ -3,7 +3,7 @@
 var Entity = (function()
 {
 
-	function Entity(image, x, y, width, height, name, type, xVelocity, yVelocity)
+	function Entity(image, x, y, name, type)
 	{
 
 		if (typeof image != "undefined")
@@ -12,12 +12,8 @@ var Entity = (function()
 		}
 		this.x = x;
 		this.y = y;
-		this.width = width;
-		this.height = height;
 		this.name = backUp(name, "none");
 		this.type = backUp(type, "none");
-		this.xVelocity = backUp(xVelocity, 0);
-		this.yVelocity = backUp(yVelocity, 0);
 
 	}
 
@@ -47,18 +43,7 @@ var Entity = (function()
 
 			if (draw)
 			{
-
-				var width = this.width;
-				var height = this.height;
-				if (!this.width)
-				{
-					width = this.image.width;
-					height = this.image.height;
-				}
-				game.drawImage(draw, Math.round(this.x * tileSize),
-					Math.round(this.y * tileSize),
-					Math.round(width * tileSize),
-					Math.round(height * tileSize));
+				game.drawImage(draw, this.x - camera.x, this.y - camera.y);
 			}
 
 		}
@@ -241,9 +226,9 @@ var Entity = (function()
 			this.x = 0;
 			return true;
 		}
-		if (this.x >= levelWidth - this.width)
+		if (this.x >= levels[level].tiles[0].length * tileSize - this.width)
 		{
-			this.x = levelWidth - this.width;
+			this.x = levels[level].tiles[0].length * tileSize - this.width;
 			return true;
 		}
 		if (this.y < 0)
@@ -251,9 +236,9 @@ var Entity = (function()
 			this.y = 0;
 			return true;
 		}
-		if (this.y >= levelHeight - this.height)
+		if (this.y >= levels[level].tiles.length * tileSize - this.height)
 		{
-			this.y = levelHeight - this.height;
+			this.y = levels[level].tiles.length * tileSize - this.height;
 			return true;
 		}
 		return false;

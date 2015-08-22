@@ -107,8 +107,8 @@ function renderTile(x, y)
 	if (tile)
 	{
 
-		var placeX = Math.round(x * tileSize);
-		var placeY = Math.round(y * tileSize);
+		var placeX = x * tileSize - camera.x;
+		var placeY = y * tileSize - camera.y;
 		var draw = null;
 
 		if (tile.animation)
@@ -127,7 +127,7 @@ function renderTile(x, y)
 
 		if (draw)
 		{
-			game.drawImage(draw, placeX, placeY, tileSize, tileSize);
+			game.drawImage(draw, placeX, placeY);
 		}
 
 	}
