@@ -3,7 +3,7 @@
 var Entity = (function()
 {
 
-	function Entity(image, x, y, name, type)
+	function Entity(image, x, y, updateFunc, type, speed)
 	{
 
 		if (typeof image != "undefined")
@@ -12,8 +12,9 @@ var Entity = (function()
 		}
 		this.x = x;
 		this.y = y;
-		this.name = backUp(name, "none");
+        this.update = updateFunc;
 		this.type = backUp(type, "none");
+        this.speed = speed;
 
 	}
 
@@ -158,7 +159,7 @@ var Entity = (function()
 			for (var y=topLeft[1]; y<bottomRight[1] + 1; y++)
 			{
 				var tile = getTile([x, y]);
-				if (tile != "-" && (tile != "i" || this.name == "tile"))
+				if (tile != "-" && (tile != "i"))
 				{
 					return new Entity(undefined, x, y, 1, 1);
 				}
@@ -179,7 +180,7 @@ var Entity = (function()
 				{
 					if (this.collidesOther(other, x, y))
 					{
-						if (other.name != "none")
+						if (other.type != "none")
 						{
 							return other;
 						}
@@ -226,9 +227,9 @@ var Entity = (function()
 			this.x = 0;
 			return true;
 		}
-		if (this.x >= levels[level].tiles[0].length * tileSize - this.width)
+		if (this.x >= levelWidth() * tileSize - this.width)
 		{
-			this.x = levels[level].tiles[0].length * tileSize - this.width;
+			this.x = levelHeight() * tileSize - this.width;
 			return true;
 		}
 		if (this.y < 0)

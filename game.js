@@ -103,22 +103,38 @@ function initializeWorld()
 			levels[i].tiles[y] = (levels[i].tiles[y]).split("");
 			for (var x=0; x<levels[i].tiles[y].length; x++)
 			{
-				if (levels[i].tiles[y][x] == " ")
+                if (Math.random() < 0.5)
+                    levels[i].tiles[y][x] = "g"
+                else
+                    levels[i].tiles[y][x] = "-"
+                var tile = levels[i].tiles[y][x];
+				if (tile == " ")
 				{
 					levels[i].tiles[y].splice(x, 1);
-					if (Math.random() < 0.5)
-						levels[i].tiles[y][x] = "g"
-					else
-						levels[i].tiles[y][x] = "-"
 				}
+                else if (tile != "-")
+                {
+                    levels[i].entities[tile] = new Entity("assets/" + tile + ".png");
+                }
 			}
 		}
 	}
 
-    levels[0].entities["player"] = new Entity("assets/hero.png", 0, 0, "player", "player");
-    levels[0].entities["g"] = new Entity("assets/tile.png");
+    levels[0].entities.big = new Entity(null, 0, 0);
 
-    controlled = levels[0].entities["player"];
+    for (var i=0; i<10; i++)
+    {
+
+        var pixelsPerSec = 1000;
+        var speed = pixelsPerSec / 1000.0;
+
+        levels[0].entities[i] = new Entity("assets/hero.png",
+            levelWidth() * tileSize * Math.random(), levelHeight() * tileSize * Math.random(),
+            AIUpdate, "swarm", speed);
+
+    }
+
+    controlled = levels[0].entities[0];
 
 }
 
@@ -163,35 +179,51 @@ function update(totalTime)
 
 	delta = totalTime - lastTime;
 
+	lastTime = totalTime;
+
     if (key("A"))
     {
-        controlled.x -= 1 * delta;
+        controlled.x -= controlled.speed * delta;
     }
     if (key("E"))
     {
-        controlled.x += 1 * delta;
+        controlled.x += controlled.speed * delta;
     }
     if (key("O"))
     {
-        controlled.y += 1 * delta;
+        controlled.y += controlled.speed * delta;
     }
     if (keys[188])
     {
-        controlled.y -= 1 * delta;
+        controlled.y -= controlled.speed * delta;
     }
+
+    everyEntity(function(e){
+        if (typeof e.update != "undefined")
+        {
+            e.update(e, delta);
+        }
+    });
+
 
     var totalX = 0;
     var totalY = 0;
     var count = 0;
 
     everyEntity(function(e){
-        if (typeof e.x != "undefined" && typeof e.y != "undefined")
+        if (typeof e.x != "undefined" && typeof e.y != "undefined" &&
+            typeof e.image != "undefined" && e.image.complete)
         {
-            totalX += e.x;
-            totalY += e.y;
+            totalX += e.x + e.image.width / 2;
+            totalY += e.y + e.image.height / 2;
             count += 1;
         }
     });
+
+    var weight = 7;
+    totalX += controlled.x * count * weight;
+    totalY += controlled.y * count * weight;
+    count += count * weight;
 
     totalX /= count;
     totalY /= count;
@@ -199,10 +231,18 @@ function update(totalTime)
     camera.x = totalX - container.width / 2;
     camera.y = totalY - container.height / 2;
 
-
 	render(delta);
 
-	lastTime = totalTime;
+}
+
+function AIUpdate(self, delta)
+{
+
+    if (self != controlled)
+    {
+        self.x += self.speed * delta * (self.x < levels[level].entities.big.x ? 1 : -1);
+        self.y += self.speed * delta * (self.y < levels[level].entities.big.y ? 1 : -1);
+    }
 
 }
 

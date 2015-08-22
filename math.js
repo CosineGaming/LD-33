@@ -1,4 +1,4 @@
-// Position math
+// Positions
 
 function tilePos(x, y)
 {
@@ -16,4 +16,16 @@ function getTile(tile)
 	{
 		return "-";
 	}
+}
+
+// Convenience
+
+function levelWidth()
+{
+    return levels[level].tiles[0].length;
+}
+
+function levelHeight()
+{
+    return levels[level].tiles.length;
 }
