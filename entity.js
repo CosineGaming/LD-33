@@ -3,7 +3,7 @@
 var Entity = (function()
 {
 
-	function Entity(image, x, y, updateFunc, type, speed)
+	function Entity(image, x, y, updateFunc, type, name, speed, resistance, xVel, yVel)
 	{
 
 		if (typeof image != "undefined")
@@ -14,7 +14,12 @@ var Entity = (function()
 		this.y = y;
         this.update = updateFunc;
 		this.type = backUp(type, "none");
+		this.name = backUp(name, "none");
         this.speed = speed;
+		this.resistance = resistance
+
+		this.xVel = backUp(xVel, 0);
+		this.yVel = backUp(yVel, 0);
 
 	}
 
@@ -44,7 +49,10 @@ var Entity = (function()
 
 			if (draw)
 			{
+				var alpha = backUp(this.alpha, 1);
+				game.globalAlpha = alpha;
 				game.drawImage(draw, this.x - camera.x, this.y - camera.y);
+				game.globalAlpha = 1;
 			}
 
 		}
@@ -146,22 +154,31 @@ var Entity = (function()
 
 	};
 
-	Entity.prototype.collidesTile = function(x, y)
+	Entity.prototype.collideTile = function(x, y, types)
 	{
 
 		var eX = backUp(x, this.x);
 		var eY = backUp(y, this.y);
 
 		var topLeft = tilePos(eX, eY);
-		var bottomRight = tilePos(eX + this.width - 0.001, eY + this.height - 0.001);
-		for (var x=topLeft[0]; x<bottomRight[0] + 1; x++)
+		var bottomRight = topLeft;
+		if (typeof this.image != "undefined" && this.image.complete)
 		{
-			for (var y=topLeft[1]; y<bottomRight[1] + 1; y++)
+			var bottomRight = tilePos(eX + this.image.width - 0.001, eY + this.image.height - 0.001);
+		}
+
+		for (var x=topLeft[0]; x<=bottomRight[0]; x++)
+		{
+			for (var y=topLeft[1]; y<=bottomRight[1]; y++)
 			{
 				var tile = getTile([x, y]);
-				if (tile != "-" && (tile != "i"))
+				if (tile != "-")
 				{
-					return new Entity(undefined, x, y, 1, 1);
+					if (typeof types == "undefined" || types.indexOf(tile) != -1)
+					{
+						if (typeof typels != "undefined") alert("yeah");
+						return new Entity(undefined, x, y, undefined, "tile", tile);
+					}
 				}
 			}
 		}
@@ -169,7 +186,7 @@ var Entity = (function()
 
 	};
 
-	Entity.prototype.collidesWorld = function(x, y)
+	Entity.prototype.collideWorld = function(x, y, types)
 	{
 		for (var key in levels[level].entities)
 		{
@@ -178,11 +195,14 @@ var Entity = (function()
 				other = levels[level].entities[key];
 				if (other != this)
 				{
-					if (this.collidesOther(other, x, y))
+					if (this.collideOther(other, x, y))
 					{
 						if (other.type != "none")
 						{
-							return other;
+							if (typeof types == "undefined" || types.indexOf(other.type) != -1)
+							{
+								return other;
+							}
 						}
 					}
 				}
@@ -191,27 +211,27 @@ var Entity = (function()
 		return false;
 	};
 
-	Entity.prototype.collidesOther = function(other, x, y)
+	Entity.prototype.collideOther = function(other, x, y)
 	{
 
-		var eX = backUp(x, this.x);
-		var eY = backUp(y, this.y);
+		var eX = backUp(x, this.image.x);
+		var eY = backUp(y, this.image.y);
 
-		return (eX < other.x + other.width
-			&& other.x < eX + this.width
-			&& eY < other.y + other.height
-			&& other.y < eY + this.height);
+		return (eX < other.x + other.image.width
+			&& other.x < eX + this.image.width
+			&& eY < other.y + other.image.height
+			&& other.y < eY + this.image.height);
 
 	};
 
-	Entity.prototype.collides = function(x, y)
+	Entity.prototype.collide = function(x, y, types)
 	{
-		var w = this.collidesWorld(x, y);
+		var w = this.collideWorld(x, y, types);
 		if (w)
 		{
 			return w;
 		}
-		var t = this.collidesTile(x, y);
+		var t = this.collideTile(x, y, types);
 		if (t)
 		{
 			return t;
@@ -246,30 +266,63 @@ var Entity = (function()
 
 	};
 
-	Entity.prototype.handleCollisions = function(oldX, oldY)
+	Entity.prototype.handleCollisions = function(newX, newY, types)
 	{
 
-		var goingRight = oldX < this.x;
-		var goingLeft = oldX > this.x;
-		var goingUp = oldY > this.y;
-		var byX = this.collides(this.x, oldY);
-		var byY = this.collides(oldX, this.y + 0.1);
+		var goingRight = this.x < newX;
+		var goingLeft = this.x > newX;
+		var goingDown = this.y < newY;
+		var goingUp = this.y > newY;
+		var byX = this.collide(newX, this.y, types);
+		var byY = this.collide(this.x, newY, types);
 
-		if (byY)
+		var didCollide = false;
+
+		if (byX.type == "tile")
 		{
-			this.yVelocity = 0;
-			if (byY.xVelocity)
-			{
-				this.xVelocity = byY.xVelocity;
-			}
-			this.y = Math.floor(byY.y + byY.height * goingUp)
-				- this.height * !goingUp;
+			byX.x *= tileSize;
+			byX.y *= tileSize;
 		}
+		if (byY.type == "tile")
+		{
+			byY.x *= tileSize;
+			byY.y *= tileSize;
+		}
+
 		if (byX)
 		{
-			this.x = Math.floor(byX.x + byX.width * goingLeft)
-				- this.width * goingRight;
+			didCollide = true;
+			var width = tileSize;
+			if (byX.image)
+			{
+				width = byX.image.width;
+			}
+			this.xVel = 0;
+			this.x = Math.floor(byX.x + width * goingLeft)
+				- this.image.width * goingRight;
 		}
+		else
+		{
+			this.x = newX;
+		}
+		if (byY)
+		{
+			didCollide = true;
+			var height = tileSize;
+			if (byY.image)
+			{
+				height = byY.image.height;
+			}
+			this.yVel = 0;
+			this.y = Math.floor(byY.y + height * goingUp)
+				- this.image.height * goingDown;
+		}
+		else
+		{
+			this.y = newY;
+		}
+
+		return didCollide;
 
 	};
 
