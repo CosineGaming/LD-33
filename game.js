@@ -145,11 +145,12 @@ function initializeWorld()
 		var speed = acc / mil / mil;
 		var resistance = 0.9925;
 
-		e = new Entity("assets/swarm.png", 0, 0, updateAI, "enemy", "swarm", speed, resistance);
+		e = new Entity(undefined, 0, 0, updateAI, "enemy", "swarm", speed, resistance);
 		e.aggressive = true;
 		e.maxHealth = 5;
 		e.health = e.maxHealth;
 		e.key = i;
+		e.loadAnimation("assets/anim/swarm/", 10, 3, undefined, true);
 
 		e.spawnSafe();
 
