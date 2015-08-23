@@ -337,6 +337,8 @@ function initializeLevel()
 
     }
 
+	levels[level].bullets = [];
+
     controlled = levels[level].entities[0];
 
 }
@@ -387,6 +389,11 @@ function render(updateTime)
 	clears = [];
 
 	everyEntity(function(entity){entity.render();});
+
+	for (var i=0; i<levels[level].bullets.length; i++)
+	{
+		levels[level].bullets[i].render();
+	}
 
 	if (displayFps)
 	{
@@ -503,6 +510,12 @@ function update(totalTime)
         }
     });
 
+	for (var i=0; i<levels[level].bullets.length; i++)
+	{
+		var b = levels[level].bullets[i];
+		updateBullet(b, delta);
+	}
+
 	collideKeys = undefined;
 
 	updateCamera(delta);
@@ -544,7 +557,7 @@ function updateAI(self, delta)
 
 		if (self.aggressive)
 		{
-			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 10, 50);
+			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 5, 100);
 			x += knockback[0] * delta;
 			y += knockback[1] * delta;
 		}
@@ -766,7 +779,7 @@ function shoot(entity, towardsX, towardsY, type, speed, accuracy, knockback, pow
 		bullet.power = bullet.maxPower;
 		var key = Math.random();
 		bullet.key = key;
-		levels[level].entities[key] = bullet;
+		levels[level].bullets.push(bullet);
 		entity.cool = cool;
 
 		if (entity == controlled)
