@@ -76,7 +76,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c f f f f f f f f f f f f f f f c",
 				"c f f f f f f f f f f f f f f f c",
 				"c f f g f f f f f f f f f g f f c",
@@ -86,7 +86,7 @@ function initializeWorld()
 				"c f f g f f f f f f f f f g f f c",
 				"c f f f f f f f f f f f f f f f c",
 				"c f f f f f f f f f f f f f f f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -95,7 +95,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c g f f f f f f f f f f f f f g c",
 				"c f g f f g f f f f f g f f g f c",
 				"c f f g f f f f g f f f f g f f c",
@@ -105,7 +105,7 @@ function initializeWorld()
 				"c f f g f f f f g f f f f g f f c",
 				"c f g f f g f f f f f g f f g f c",
 				"c g f f f f f f f f f f f f f g c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -114,7 +114,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c l l l l l l l l l l l l l l l c",
 				"c l g f f f f f f f f f f f g l c",
 				"c l f f f f f f f f f f f f f l c",
@@ -124,7 +124,7 @@ function initializeWorld()
 				"c l f f f f f f f f f f f f f l c",
 				"c l g f f f f f f f f f f f g l c",
 				"c l l l l l l l l l l l l l l l c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -133,7 +133,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c f f l f f f f f f f f f l f f c",
 				"c f f l f f f f f f f f f l f f c",
 				"c l l g f f g g l g g f f g l l c",
@@ -143,7 +143,7 @@ function initializeWorld()
 				"c l l g f f g g l g g f f g l l c",
 				"c f f l f f f f f f f f f l f f c",
 				"c f f l f f f f f f f f f l f f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -152,7 +152,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c f f f f f f f f f f f f l f g c",
 				"c f f f g l f f f f f f f f f f c",
 				"c f f f f f f f f f f f f f f f c",
@@ -162,7 +162,7 @@ function initializeWorld()
 				"c f f f f l f g f f f f f f f f c",
 				"c f f g f f f f f f f g f f l f c",
 				"c f f f f f f f f f f f f f g f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -171,7 +171,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c f g f f f f f f g f f f f g g c",
 				"c f f g f f f f f g f f f g g f c",
 				"c f f f g f f f f g f f g f f f c",
@@ -181,7 +181,7 @@ function initializeWorld()
 				"c f f f g f f g f f f g f f f f c",
 				"c f f f g f f g f f f g f f f f c",
 				"c f f f g f f f f f f g f f f f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -190,7 +190,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c l f l f f l f f f f l f f f l c",
 				"c f f f f f f l f f f l f f l f c",
 				"c f f f f f f f l f f f f l f f c",
@@ -200,7 +200,7 @@ function initializeWorld()
 				"c l l f f f f f f f f f f f f f c",
 				"c f f f f f f f f f f f f l f f c",
 				"c f f f l f f f l f f f f f l f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -209,7 +209,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c f g f f f f g f f f f l l f f c",
 				"c f g f l f f f f g f f f l g f c",
 				"c f f f g f f l f f g l f f f f c",
@@ -219,7 +219,7 @@ function initializeWorld()
 				"c g l f g l f g l g g f f f l f c",
 				"c f l f g f f f l f f f f g f f c",
 				"c f f f g f f f l f f f l f f f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -228,7 +228,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c f g l f f f f f f f f g l l l c",
 				"c f g f f f f f f f f f g l f l c",
 				"c f g f f g g g g g f f g f f l c",
@@ -238,7 +238,7 @@ function initializeWorld()
 				"c f g g f f f g f f g f f f l f c",
 				"c f g f f f g f f g f f f l f f c",
 				"c f f f f g f f f f f f l f f f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -247,7 +247,7 @@ function initializeWorld()
 		{
 
 			tiles : [
-				"[ r r r r r r r r r r r r r r r ]",
+				"a r r r r r r r r r r r r r r r b",
 				"c f f f f f f f f f f f f f f f c",
 				"c f l l l l l f l l l f f l f f c",
 				"c f f f f f f l f f f l f f l f c",
@@ -257,7 +257,7 @@ function initializeWorld()
 				"c f l f f l l f f f f f f l f f c",
 				"c f f f l f f l f f f l l f f f c",
 				"c f f f f f f f l l l f f f f f c",
-				"{ r r r r r r r r r r r r r r r }"
+				"y r r r r r r r r r r r r r r r z"
 			],
 			entities : new Object()
 
@@ -372,7 +372,7 @@ function render(updateTime)
 function update(totalTime)
 {
 
-	window.requestAnimationFrame(update);
+	var nextFrame = window.requestAnimationFrame(update);
 
 	delta = totalTime - lastTime;
 
@@ -429,7 +429,7 @@ function update(totalTime)
 	}
 	controlled.cool -= delta;
 
-	controlled.handleCollisions(x, y, ["g", "c", "r", "[", "]", "{", "}"]);
+	controlled.handleCollisions(x, y, ["g", "c", "r", "a", "b", "y", "z"]);
 
 	if (controlled.health <= 0)
 	{
@@ -453,7 +453,9 @@ function update(totalTime)
 		}
 		if (controlled.health < 0)
 		{
-			window.location.href = "lose"
+			window.location.href = "lose";
+			window.cancelAnimationFrame(nextFrame);
+			return;
 		}
 
 	}
@@ -526,14 +528,14 @@ function updateAI(self, delta)
 		}
 		self.cool -= delta;
 
-		collides = ["g", "c", "r", "[", "]", "{", "}", "l"];
+		collides = ["g", "c", "r", "a", "b", "y", "z", "l"];
 		if (Math.random() < 0.001)
 		{
-			collides = ["g", "c", "r", "[", "]", "{", "}"];
+			collides = ["g", "c", "r", "a", "b", "y", "z"];
 		}
 		if (self.collideTile(self.x, self.y, ["l"]))
 		{
-			collides = ["g", "c", "r", "[", "]", "{", "}"];
+			collides = ["g", "c", "r", "a", "b", "y", "z"];
 			self.health -= 0.1 * delta;
 		}
 		if (self.handleCollisions(x, y, collides))
@@ -617,14 +619,14 @@ function updateBig(self, delta)
 	x += self.xVel * delta;
 	y += self.yVel * delta;
 
-	collides = ["g", "c", "r", "[", "]", "{", "}", "l"]
+	collides = ["g", "c", "r", "a", "b", "y", "z", "l"]
 	if (Math.random() < 0.01)
 	{
-		collides = ["g", "c", "r", "[", "]", "{", "}"]
+		collides = ["g", "c", "r", "a", "b", "y", "z"]
 	}
 	if (self.collideTile(self.x, self.y, ["l"]))
 	{
-		collides = ["g", "c", "r", "[", "]", "{", "}"]
+		collides = ["g", "c", "r", "a", "b", "y", "z"]
 		self.health -= 0.1 * delta;
 	}
 	if (self.handleCollisions(x, y, collides))
@@ -661,7 +663,7 @@ function updateBullet(self, delta)
 	self.power *= Math.pow(self.resistance, delta);
 	self.alpha = self.power / self.maxPower;
 
-	if (self.alpha <= 0 || self.collideTile(self.x, self.y, ["g", "c", "r", "[", "]", "{", "}"]))
+	if (self.alpha <= 0 || self.collideTile(self.x, self.y, ["g", "c", "r", "a", "b", "y", "z"]))
 	{
 		delete levels[level].entities[self.key];
 	}
