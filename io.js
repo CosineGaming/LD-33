@@ -164,7 +164,8 @@ function averageEntity(weight, type)
     everyEntity(function(e){
         if (typeof e.x != "undefined" && typeof e.y != "undefined" &&
             typeof e.image != "undefined" && e.image.complete &&
-			(typeof type == "undefined" || e.type == type))
+			(typeof type == "undefined" || e.type == type)
+			&& e.name != "bullet")
         {
 			var power = backUp(e.power, 1);
             totalX += (e.x + e.image.width / 2) * power;
@@ -184,12 +185,34 @@ function averageEntity(weight, type)
 
 }
 
-function updateCamera()
+function updateCamera(delta)
 {
 
-	var center = averageEntity(2.5);
+	var big = levels[level].entities.big;
 
-    camera.x = center[0] - container.width / 2;
-    camera.y = center[1] - container.height / 2;
+	var quadX = Math.max(1, Math.min(3, 2 - ~~((big.x - controlled.x) / (container.width / 4))));
+	var quadY = Math.max(1, Math.min(3, 2 - ~~((big.y - controlled.y) / (container.width / 4))));
+
+	var speed = 0.02;
+
+	quadX = camera.lastQuadX + (quadX - camera.lastQuadX) * speed;
+	quadY = camera.lastQuadY + (quadY - camera.lastQuadY) * speed;
+
+    var centerX = controlled.x - container.width / 4 * quadX;
+    var centerY = controlled.y - container.height / 4 * quadY;
+
+	camera.lastQuadX = quadX;
+	camera.lastQuadY = quadY;
+
+	var lag = 10;
+
+	camera.old.push({ x : centerX, y : centerY });
+
+	if (camera.old.length > lag)
+	{
+		var old = camera.old.splice(0, 1)[0];
+		camera.x = old.x;
+		camera.y = old.y;
+	}
 
 }

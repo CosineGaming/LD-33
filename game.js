@@ -1,5 +1,5 @@
+// @license magnet:?xt=urn:btih:0effb8f70b3b6f5f70ff270deftileHeight27c3f7705f85&dn=lgpl-3.0.txt General GNU Public License 3.0
 // Inserts game into <canvas id="game"></canvas>
-// @license magnet:?xt=urn:btih:0effb8f70b3b6f5f70ff270deftileHeight27c3f7705f85&dn=lgpl-3.0.txt Lesser GNU Public License 3.0
 
 // Global Variables
 
@@ -17,7 +17,7 @@ var levels;
 var level = 0;
 var levelWorlds = [];
 
-var camera = { x: 0, y : 0 };
+var camera = { x: 0, y : 0, old : [], lastQuadX : 1, lastQuadY : 1 };
 
 var tileSize = 128;
 
@@ -58,7 +58,7 @@ function initialize()
 	window.onresize = resizeWindowCallback;
 
 	game.font = "20px white Candara";
-	game.fillStyle = "#000"
+	game.fillStyle = "#FFF"
 
 	window.requestAnimationFrame(update);
 
@@ -72,18 +72,31 @@ function initializeWorld()
 	levels = [
 
 		{
+
 			tiles : [
-				"g g g g g g g g g g g g g g g",
-				"g f g f f f f g f f f f f f g",
-				"g f g f f f f f f g f f f f g",
-				"g f f f g f f f f f g f f f g",
-				"g f f f f f f f f f f g f f g",
-				"g f f f f f g f f f f f g f g",
-				"g g f f g f f f f g g f f f g",
-				"g f f f f f f f f f f f f f g",
-				"g g g g g g g g g g g g g g g"
+				"[ r r r r r r r r r r r r r r r ]",
+				"c f g f f f f g f f f f l l f f c",
+				"c f g f l f f f f g f f f l g f c",
+				"c f f f g f f l f f g l f f f f c",
+				"c f f f f f f l l f f g l f g l c",
+				"c f l f f f g f f f f f g f f f c",
+				"c f l f f f g f f f f f g f f f c",
+				"c g l f g l f g l g g f f f l f c",
+				"c f l f g f f f l f f f f g f f c",
+				"c f f f g f f f l f f f l f f f c",
+				"{ r r r r r r r r r r r r r r r }"
 			],
 			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [],
+			entities : {
+
+			}
+
 		}
 
 	];
@@ -109,44 +122,31 @@ function initializeWorld()
 		}
 	}
 
-	var acc = 8000;
+	var acc = 5000;
 	var mil = 1000;
 	var speed = acc / mil / mil;
 	var resistance = 0.99
-    var big = new Entity("assets/big.png", levelWidth() * tileSize / 2, levelHeight() * tileSize / 2, updateBig, "big", "big", speed, resistance);
+    var big = new Entity("assets/big.png", 0, 0, updateBig, "big", "big", speed, resistance);
 	big.aggressive = true;
-	big.maxHealth = 425;
+	big.maxHealth = 700;
 	big.health = big.maxHealth;
+	big.spawnSafe();
 	levels[0].entities.big = big;
 
     for (var i=0; i<20; i++)
     {
 
-		var x = 0;
-		var y = 0;
-		var e = 0;
-		var t = 0;
+		var acc = 6000;
+		var speed = acc / mil / mil;
+		var resistance = 0.9925;
 
-		do
-		{
+		e = new Entity("assets/swarm.png", 0, 0, updateAI, "enemy", "swarm", speed, resistance);
+		e.aggressive = true;
+		e.maxHealth = 5;
+		e.health = e.maxHealth;
+		e.key = i;
 
-			x = levelWidth() * tileSize * Math.random();
-			y = levelHeight() * tileSize * Math.random();
-
-		    var acc = 6000;
-		    var speed = acc / mil / mil;
-			var resistance = 0.9925;
-
-	        e = new Entity("assets/swarm.png", x, y, updateAI, "enemy", "swarm", speed, resistance);
-			e.aggressive = true;
-			e.maxHealth = 5;
-			e.health = e.maxHealth;
-			e.key = i;
-
-			t = e.collideTile(e.x, e.y, ["g"]);
-
-		}
-		while (t)
+		e.spawnSafe();
 
 		levels[0].entities[i] = e;
 
@@ -204,15 +204,15 @@ function update(totalTime)
     {
         controlled.xVel -= controlled.speed * delta;
     }
-    if (key("E"))
+    if (key("D") || key("E"))
     {
         controlled.xVel += controlled.speed * delta;
     }
-    if (key("O"))
+    if (key("S") || key("O"))
     {
         controlled.yVel += controlled.speed * delta;
     }
-    if (keys[188])
+    if (key("W") || keys[188])
     {
         controlled.yVel -= controlled.speed * delta;
     }
@@ -226,7 +226,7 @@ function update(totalTime)
 	if (mouse.active)
 	{
 
-		knockback = shoot(controlled, mouse.x + camera.x, mouse.y + camera.y, "enemy", 1, 4, 2, 1, 100);
+		knockback = shoot(controlled, mouse.x + camera.x, mouse.y + camera.y, "enemy", 1, 4, 1, 1, 100);
 
 		x += knockback[0];
 		y += knockback[1];
@@ -238,7 +238,7 @@ function update(totalTime)
 	}
 	controlled.cool -= delta;
 
-	controlled.handleCollisions(x, y, ["g"]);
+	controlled.handleCollisions(x, y, ["g", "c", "r"]);
 
 	if (controlled.health <= 0)
 	{
@@ -255,20 +255,30 @@ function update(totalTime)
 				}
 			}
 		}
-		if (typeof controlled == "undefined")
+		if (controlled.health < 0)
 		{
-			debugLog("Game Over Condition");
+			debugLog("Game Over Condition<br l>");
 		}
+	}
+
+	if (controlled.collideTile(controlled.x, controlled.y, ["l"]))
+	{
+		controlled.health -= 0.01 * delta;
 	}
 
     everyEntity(function(e){
         if (typeof e.update != "undefined")
         {
             e.update(e, delta);
+			e.keepInScreen();
+			if (typeof e.health != "undefined")
+			{
+				e.alpha = e.health / e.maxHealth * 0.8 + 0.2;
+			}
         }
     });
 
-	updateCamera(7);
+	updateCamera(delta);
 
 	render(delta);
 
@@ -279,6 +289,11 @@ function updateAI(self, delta)
 
     if (self != controlled)
     {
+
+		if (Math.random() < 0.01)
+		{
+			self.aggressive = !self.aggressive;
+		}
 
 		var big = levels[level].entities.big;
 
@@ -302,7 +317,7 @@ function updateAI(self, delta)
 
 		if (self.aggressive)
 		{
-			shoot(self, big.x, big.y, "enemy", 1, 4, 2, 1, 200);
+			shoot(self, big.x, big.y, "enemy", 1, 4, 1, 1, 100);
 		}
 		if (typeof self.cool == "undefined")
 		{
@@ -310,7 +325,17 @@ function updateAI(self, delta)
 		}
 		self.cool -= delta;
 
-		self.handleCollisions(x, y, ["g"]);
+		collides = ["g", "c", "r", "l"]
+		if (Math.random() < 0.005)
+		{
+			collides = ["g", "c", "r"]
+		}
+		if (self.collideTile(self.x, self.y, ["l"]))
+		{
+			collides = ["g", "c", "r"]
+			self.health -= 0.1 * delta;
+		}
+		self.handleCollisions(x, y, collides);
 
 		if (self.health <= 0)
 		{
@@ -325,15 +350,15 @@ function updateAI(self, delta)
 function updateBig(self, delta)
 {
 
-	if (Math.random() < 0.005)
+	if (Math.random() < 0.01)
 	{
 		self.aggressive = !self.aggressive;
 	}
 
 	var center = averageEntity(2, "enemy");
 
-	self.xVel += (self.x < center[0] ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta * Math.random();
-	self.yVel += (self.y < center[1] ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta * Math.random();
+	self.xVel += (self.x < center[0] ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta;
+	self.yVel += (self.y < center[1] ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta;
 
 	self.xVel *= Math.pow(self.resistance, delta);
 	self.yVel *= Math.pow(self.resistance, delta);
@@ -345,9 +370,31 @@ function updateBig(self, delta)
 	{
 		if (Math.random() < 0.75)
 		{
-			knockback = shoot(self, center[0], center[1], "big", 1, 4, 2, 5, 200);
+
+			var dX = center[0];
+			var dY = center[1];
+
+			if (Math.random() < 0.6)
+			{
+
+				var target;
+				var count = 0;
+				for (var e in levels[level].entities)
+				{
+					if (Math.random() < 1/++count*(e == controlled ? 5 : 1))
+					{
+						target = e;
+					}
+				}
+				dX = target.x;
+				dY = target.y;
+
+			}
+
+			knockback = shoot(self, center[0], center[1], "big", 1, 4, 1, 5, 150);
 			x += knockback[0];
 			y += knockback[1];
+
 		}
 	}
 	if (typeof self.cool == "undefined")
@@ -359,9 +406,22 @@ function updateBig(self, delta)
 	x += self.xVel * delta;
 	y += self.yVel * delta;
 
-	if (self.handleCollisions(x, y, ["g"]))
+	collides = ["g", "c", "r", "l"]
+	if (Math.random() < 0.01)
 	{
-		self.aggressive = true;
+		collides = ["g", "c", "r"]
+	}
+	if (self.collideTile(self.x, self.y, ["l"]))
+	{
+		collides = ["g", "c", "r"]
+		self.health -= 0.1 * delta;
+	}
+	if (self.handleCollisions(x, y, collides))
+	{
+		if (Math.random() < 0.1)
+		{
+			self.aggressive = true;
+		}
 	}
 
 	if (self.health <= 0)
@@ -380,7 +440,7 @@ function updateBullet(self, delta)
 	self.power *= Math.pow(self.resistance, delta);
 	self.alpha = self.power / self.maxPower;
 
-	if (self.alpha <= 0 || self.collideTile(self.x, self.y, ["g"]))
+	if (self.alpha <= 0 || self.collideTile(self.x, self.y, ["g", "c", "r"]))
 	{
 		delete levels[level].entities[self.key];
 	}
@@ -397,8 +457,7 @@ function updateBullet(self, delta)
 	{
 
 		other.health -= self.power;
-		other.alpha = other.health / other.maxHealth * 0.8 + 0.2;
-		if (Math.random() < 0.05)
+		if (Math.random() < 0.5)
 		{
 			other.aggressive = false;
 		}

@@ -326,6 +326,26 @@ var Entity = (function()
 
 	};
 
+	Entity.prototype.spawnSafe = function()
+	{
+
+		var x = 0;
+		var y = 0;
+		var t = 0;
+
+		do
+		{
+
+			this.x = levelWidth() * tileSize * Math.random();
+			this.y = levelHeight() * tileSize * Math.random();
+
+			t = this.collideTile(this.x, this.y, ["g", "c", "r", "[", "]", "{", "}", "l"]);
+
+		}
+		while (t)
+
+	}
+
 	return Entity;
 
 })();
