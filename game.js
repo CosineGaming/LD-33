@@ -257,7 +257,7 @@ function update(totalTime)
 		}
 		if (controlled.health < 0)
 		{
-			debugLog("Game Over Condition<br l>");
+			window.location.href = "lose"
 		}
 	}
 
@@ -427,7 +427,7 @@ function updateBig(self, delta)
 	if (self.health <= 0)
 	{
 		self.alpha = 0;
-		alert("you win")
+		window.location.href = "win";
 	}
 
 }
