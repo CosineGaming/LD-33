@@ -208,19 +208,27 @@ var Entity = (function()
 
 	Entity.prototype.collideWorld = function(x, y, types)
 	{
-		for (var key in levels[level].entities)
+		if (typeof collideKeys == "undefined")
 		{
-			if (levels[level].entities.hasOwnProperty(key))
+			collideKeys = Object.keys(levels[level].entities);
+		}
+		for (var i=0; i<collideKeys.length; i++)
+		{
+			var other = levels[level].entities[collideKeys[i]];
+			if (typeof other != "undefined" && other.type != "none" && other.name != "bullet")
 			{
-				other = levels[level].entities[key];
-				if (other != this && other.type != "none" && other.name != "bullet" &&
-					(typeof types == "undefined" || types.indexOf(other.type) != -1))
+				if (other != this && (typeof types == "undefined" || types.indexOf(other.type) != -1))
 				{
 					if (this.collideOther(other))
 					{
 						return other;
 					}
 				}
+			}
+			else
+			{
+				collideKeys.splice(i, 1);
+				i -= 1;
 			}
 		}
 		return false;

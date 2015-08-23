@@ -26,6 +26,8 @@ var resizeTimer = false;
 
 var music;
 
+var collideKeys;
+
 var controlled;
 
 // Entry point
@@ -501,6 +503,8 @@ function update(totalTime)
         }
     });
 
+	collideKeys = undefined;
+
 	updateCamera(delta);
 
 	render(delta);
@@ -540,7 +544,7 @@ function updateAI(self, delta)
 
 		if (self.aggressive)
 		{
-			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 10, 200);
+			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 10, 50);
 			x += knockback[0] * delta;
 			y += knockback[1] * delta;
 		}
