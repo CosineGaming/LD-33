@@ -1,10 +1,13 @@
 function resizeWindow()
 {
 
-	container.width = window.innerWidth;
-	container.height = window.innerHeight;
+	for (var i=0; i<2; i++)
+	{
+		CVs[i].canvas.width = window.innerWidth;
+		CVs[i].canvas.height = window.innerHeight;
+	}
 
-	game.lineWidth = 4;
+	CVs[1].lineWidth = 4;
 
 }
 
@@ -20,15 +23,15 @@ function resizeWindowCallback()
 function unsupported()
 {
 	document.getElementById("error-text").innerHTML = "Sorry, but you're using an unsupported browser and can't play this game.";
-	container = null;
-	game = null;
+	CVs[0] = null;
+	CVs[1] = null;
 }
 
 function fatalError(info)
 {
 	document.getElementById("error-text").innerHTML = "A fatal error has occured: " + info + " Sorry. Try playing on a different browser.";
-	container = null;
-	game = null;
+	CVs[0] = null;
+	CVs[1] = null;
 }
 
 function debugLog(log)
@@ -137,9 +140,8 @@ function renderTile(x, y)
 		if (draw)
 		{
 			var alpha = backUp(tile.alpha, 1);
-			game.globalAlpha = alpha;
-			game.drawImage(draw, placeX, placeY);
-			game.globalAlpha = 1;
+			CVs[0].globalAlpha = alpha;
+			CVs[0].drawImage(draw, Math.round(placeX), Math.round(placeY));
 		}
 
 	}
@@ -193,19 +195,23 @@ function updateCamera(delta)
 
 	var big = levels[level].entities.big;
 
-	var quadX = Math.max(1, Math.min(3, 2 - ~~((big.x - controlled.x) / (container.width / 4))));
-	var quadY = Math.max(1, Math.min(3, 2 - ~~((big.y - controlled.y) / (container.width / 4))));
+	var quadX = Math.max(1, Math.min(3, 2 - ~~((big.x - controlled.x) / (screenWidth() / 4))));
+	var quadY = Math.max(1, Math.min(3, 2 - ~~((big.y - controlled.y) / (screenHeight() / 4))));
 
 	var speed = 0.02;
 
 	quadX = camera.lastQuadX + (quadX - camera.lastQuadX) * speed;
 	quadY = camera.lastQuadY + (quadY - camera.lastQuadY) * speed;
 
-    var centerX = controlled.x - container.width / 4 * quadX;
-    var centerY = controlled.y - container.height / 4 * quadY;
+    var centerX = controlled.x - screenWidth() / 4 * quadX;
+    var centerY = controlled.y - screenHeight() / 4 * quadY;
 
-	camera.lastQuadX = quadX;
-	camera.lastQuadY = quadY;
+	if (quadX != camera.lastQuadX || quadY != camera.lastQuadY)
+	{
+		camera.lastQuadX = quadX;
+		camera.lastQuadY = quadY;
+		camera.changed = true;
+	}
 
 	var lag = 10;
 
@@ -214,8 +220,12 @@ function updateCamera(delta)
 	if (camera.old.length > lag)
 	{
 		var old = camera.old.splice(0, 1)[0];
-		camera.x = old.x;
-		camera.y = old.y;
+		if (old.x != camera.x || old.y != camera.y)
+		{
+			camera.x = old.x;
+			camera.y = old.y;
+			camera.changed = true;
+		}
 	}
 
 }

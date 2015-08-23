@@ -52,10 +52,15 @@ var Entity = (function()
 
 			if (draw)
 			{
+
 				var alpha = backUp(this.alpha, 1);
-				game.globalAlpha = alpha;
-				game.drawImage(draw, this.x - camera.x, this.y - camera.y);
-				game.globalAlpha = 1;
+				var x = Math.round(this.x - camera.x);
+				var y = Math.round(this.y - camera.y);
+				clears.push(x, y, this.image.width, this.image.height);
+
+				CVs[1].globalAlpha = alpha;
+				CVs[1].drawImage(draw, x, y);
+
 			}
 
 		}

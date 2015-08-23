@@ -34,3 +34,13 @@ function randInt(min, max)
 {
 	return Math.floor(Math.random() * (max - min)) + min;
 }
+
+function screenWidth()
+{
+	return CVs[0].canvas.width;
+}
+
+function screenHeight()
+{
+	return CVs[0].canvas.height;
+}

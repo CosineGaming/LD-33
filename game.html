@@ -13,12 +13,14 @@
 		<script src="entity.js"></script>
 
 		<style>
+			body {
+				background-color: black;
+				color: white;
+			}
 			* {
 				padding: 0;
 				margin: 0;
 				overflow: hidden;
-				background-color: black;
-				color: white;
 				/* Just in case something goes awry and we get extra space */
 			}
 		</style>
@@ -28,7 +30,8 @@
 	<body>
 
 		<div id="error-text"></div>
-		<canvas id="game">You're using an outdated browser so you can't play, sorry. Try downloading Firefox.</canvas>
+		<canvas id="tiles" style="position: absolute; z-index: 0">You're using an outdated browser so you can't play, sorry. Try downloading Firefox.</canvas>
+		<canvas id="entities" style="position: absolute; z-index: 1"></canvas>
 
 	</body>
 

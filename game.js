@@ -3,8 +3,7 @@
 
 // Global Variables
 
-var container;
-var game;
+var CVs = [undefined, undefined];
 
 var sounds = {};
 
@@ -17,7 +16,8 @@ var levels;
 var level = 0;
 var levelWorlds = [];
 
-var camera = { x: 0, y : 0, old : [], lastQuadX : 1, lastQuadY : 1 };
+var camera = { x: 0, y : 0, old : [], lastQuadX : 1, lastQuadY : 1, changed : false };
+var clears = [];
 
 var tileSize = 128;
 
@@ -37,30 +37,32 @@ window.onload = initialize;
 function initialize()
 {
 
-	container = document.getElementById("game");
-	if (!container.getContext || !container.getContext("2d"))
+	var tileCont = document.getElementById("tiles");
+	if (!tileCont.getContext || !tileCont.getContext("2d"))
 	{
 		unsupported();
 		return false;
 	}
-	game = container.getContext("2d");
+	CVs[0] = tileCont.getContext("2d");
+	var entCont = document.getElementById("entities");
+	CVs[1] = entCont.getContext("2d");
 
-	container.setAttribute("tabindex", "0");
-	container.focus();
-	container.addEventListener("mousedown", mouseDown);
-	container.addEventListener("mouseup", mouseUp);
-	container.addEventListener("contextmenu", function(event){event.preventDefault();});
-	container.addEventListener("mousemove", mouseMove);
-	container.addEventListener("keydown", keyDown);
-	container.addEventListener("keyup", keyUp);
+	entCont.setAttribute("tabindex", "0");
+	entCont.focus();
+	entCont.addEventListener("mousedown", mouseDown);
+	entCont.addEventListener("mouseup", mouseUp);
+	entCont.addEventListener("contextmenu", function(event){event.preventDefault();});
+	entCont.addEventListener("mousemove", mouseMove);
+	entCont.addEventListener("keydown", keyDown);
+	entCont.addEventListener("keyup", keyUp);
 
 	initializeWorld();
 
 	resizeWindow();
 	window.onresize = resizeWindowCallback;
 
-	game.font = "20px white Candara";
-	game.fillStyle = "#FFF"
+	CVs[1].font = "20px white Candara";
+	CVs[1].fillStyle = "#FFF";
 
 	window.requestAnimationFrame(update);
 
@@ -340,9 +342,8 @@ function initializeLevel()
 function render(updateTime)
 {
 
-	if ("game" in window)
+	if ("CVs" in window)
 	{
-		game.clearRect(0, 0, container.width, container.height);
 	}
 	else
 	{
@@ -350,21 +351,44 @@ function render(updateTime)
 		return;
 	}
 
-	for (var y=0; y<levels[level].tiles.length; y++)
+	if (camera.changed)
 	{
-		for (var x=0; x<levels[level].tiles[y].length; x++)
-		{
-			renderTile(x, y);
-		}
-	}
 
-	everyEntity(function(entity){entity.render();});
+		CVs[0].clearRect(0, 0, CVs[0].canvas.width, CVs[0].canvas.height);
+
+		for (var y=0; y<levels[level].tiles.length; y++)
+		{
+			for (var x=0; x<levels[level].tiles[y].length; x++)
+			{
+				renderTile(x, y);
+			}
+		}
+
+	}
 
 	var displayFps = true;
 
+	for (var clear=0; clear<clears.length; clear+=4)
+	{
+		var x = clears[clear];
+		var y = clears[clear + 1];
+		var width = clears[clear + 2];
+		var height = clears[clear + 3];
+		CVs[1].clearRect(x, y, width, height);
+	}
+
 	if (displayFps)
 	{
-		game.fillText(String(Math.round(updateTime)), 20, 20);
+		CVs[1].clearRect(0, 0, 50, 50);
+	}
+
+	clears = [];
+
+	everyEntity(function(entity){entity.render();});
+
+	if (displayFps)
+	{
+		CVs[1].fillText(String(Math.round(updateTime)), 20, 20);
 	}
 
 }
@@ -516,7 +540,7 @@ function updateAI(self, delta)
 
 		if (self.aggressive)
 		{
-			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 5, 100);
+			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 10, 200);
 			x += knockback[0] * delta;
 			y += knockback[1] * delta;
 		}
@@ -671,30 +695,40 @@ function updateBullet(self, delta)
 		other = "big";
 	}
 
-	other = self.collideWorld(x, y, [other]);
-
-	if (other)
+	if (self.distanceX > 100 || self.distanceY > 100 || typeof self.distanceX == "undefined")
 	{
 
-		other.health -= self.power;
-		if (Math.random() < 0.5)
+		other = self.collideWorld(x, y, [other]);
+
+		if (other)
 		{
-			other.aggressive = false;
+
+			other.health -= self.power;
+			if (Math.random() < 0.5)
+			{
+				other.aggressive = false;
+			}
+
+			delete levels[level].entities[self.key];
+
 		}
 
-		delete levels[level].entities[self.key];
+		var solids = ["g", "c", "r", "a", "b", "y", "z"];
+		var tile = self.collideTile(x, y, solids);
+
+		if (other || self.alpha <= 0 || tile)
+		{
+
+			delete levels[level].entities[self.key];
+
+		}
+
+		self.distanceX = 0;
+		self.distanceY = 0;
 
 	}
-
-	var solids = ["g", "c", "r", "a", "b", "y", "z"];
-	var tile = self.collideTile(x, y, solids);
-
-	if (other || self.alpha <= 0 || tile)
-	{
-
-		delete levels[level].entities[self.key];
-
-	}
+	self.distanceX += self.xVel * delta;
+	self.distanceY += self.yVel * delta;
 
 	self.x = x;
 	self.y = y;
