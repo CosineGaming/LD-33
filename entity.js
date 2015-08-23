@@ -19,6 +19,7 @@ var Entity = (function()
 		this.resistance = resistance
 		this.width = 0;
 		this.height = 0;
+		this.origin = { x : 0, y : 0 };
 
 		this.xVel = backUp(xVel, 0);
 		this.yVel = backUp(yVel, 0);
@@ -73,7 +74,7 @@ var Entity = (function()
 		this.image = image;
 	};
 
-	Entity.prototype.loadAnimation = function(url, count, frameMultiplier, frames, repeat, whenDone, suffix)
+	Entity.prototype.loadAnimation = function(url, count, frameMultiplier, frames, repeat, setWidth, whenDone, suffix)
 	{
 
 		frameMultiplier = backUp(frameMultiplier, 1);
@@ -87,11 +88,14 @@ var Entity = (function()
 			var image = new Image();
 			if (frame == 0)
 			{
-				var loadHandler = function() {
-				    this.width = image.width;
-				    this.height = image.height;
-				}.bind(this);
-				image.onload = loadHandler;
+				if (setWidth)
+				{
+					var loadHandler = function() {
+					    this.width = image.width;
+					    this.height = image.height;
+					}.bind(this);
+					image.onload = loadHandler;
+				}
 				this.image = image;
 			}
 			image.src = url + String(frame) + suffix;
@@ -125,6 +129,11 @@ var Entity = (function()
 	{
 
 		var anime = this.animation;
+
+		if (!anime.paused)
+		{
+			anime.countdown -= 1;
+		}
 
 		if (anime.countdown <= 0)
 		{
@@ -164,8 +173,8 @@ var Entity = (function()
 	Entity.prototype.collideTile = function(x, y, types)
 	{
 
-		var eX = backUp(x, this.x);
-		var eY = backUp(y, this.y);
+		var eX = backUp(x, this.x) + this.origin.x;
+		var eY = backUp(y, this.y) + this.origin.y;
 
 		var topLeft = tilePos(eX, eY);
 		var bottomRight = topLeft;
@@ -201,7 +210,7 @@ var Entity = (function()
 				other = levels[level].entities[key];
 				if (other != this)
 				{
-					if (this.collideOther(other, x, y))
+					if (this.collideOther(other))
 					{
 						if (other.type != "none")
 						{
@@ -220,13 +229,13 @@ var Entity = (function()
 	Entity.prototype.collideOther = function(other, x, y)
 	{
 
-		var eX = backUp(x, this.x);
-		var eY = backUp(y, this.y);
+		var eX = backUp(x, this.x) + this.origin.x;
+		var eY = backUp(y, this.y) + this.origin.y;
 
-		return (eX < other.x + other.width
-			&& other.x < eX + this.width
-			&& eY < other.y + other.height
-			&& other.y < eY + this.height);
+		return (eX < (other.x + other.origin.x) + other.width
+			&& (other.x + other.origin.x) < eX + this.width
+			&& eY < (other.y + other.origin.y) + other.height
+			&& (other.y + other.origin.y) < eY + this.height);
 
 	};
 
@@ -248,27 +257,34 @@ var Entity = (function()
 	Entity.prototype.keepInScreen = function()
 	{
 
-		if (this.x < 0)
+		var did = false;
+
+		if (typeof this.width != "undefined")
 		{
-			this.x = 0;
-			return true;
+			if (this.x < -this.origin.x)
+			{
+				this.x = -this.origin.x;
+				did = true;
+			}
+			if (this.x >= levelWidth() * tileSize - this.width - this.origin.x)
+			{
+				this.x = levelWidth() * tileSize - this.width - this.origin.x;
+				did = true;
+			}
+			if (this.y < -this.origin.y)
+			{
+				this.y = -this.origin.y;
+				did = true;
+			}
+			if (this.y >= levelHeight() * tileSize - this.height - this.origin.y)
+			{
+				this.y = levelHeight() * tileSize - this.height - this.origin.y;
+				did = true;
+			}
+
 		}
-		if (this.x >= levelWidth() * tileSize - this.width)
-		{
-			this.x = levelHeight() * tileSize - this.width;
-			return true;
-		}
-		if (this.y < 0)
-		{
-			this.y = 0;
-			return true;
-		}
-		if (this.y >= levels[level].tiles.length * tileSize - this.height)
-		{
-			this.y = levels[level].tiles.length * tileSize - this.height;
-			return true;
-		}
-		return false;
+
+		return did;
 
 	};
 
@@ -304,8 +320,8 @@ var Entity = (function()
 				width = byX.width;
 			}
 			this.xVel = 0;
-			this.x = byX.x + width * goingLeft
-				- (this.width + 1) * goingRight;
+			this.x = (byX.x + byX.origin.x) + (width - this.origin.x) * goingLeft
+				- (this.width + this.origin.x + 1) * goingRight;
 		}
 		else
 		{
@@ -320,8 +336,8 @@ var Entity = (function()
 				height = byY.height;
 			}
 			this.yVel = 0;
-			this.y = byY.y + height * goingUp
-				- (this.height + 1) * goingDown;
+			this.y = (byY.y + byY.origin.y) + (height - this.origin.y) * goingUp
+				- (this.height + this.origin.y + 1) * goingDown;
 		}
 		else
 		{
@@ -346,6 +362,8 @@ var Entity = (function()
 			this.y = levelHeight() * tileSize * Math.random();
 
 			t = this.collideTile(this.x, this.y, ["g", "c", "r", "[", "]", "{", "}", "l"]);
+
+			this.keepInScreen();
 
 		}
 		while (t)

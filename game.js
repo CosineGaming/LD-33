@@ -77,6 +77,139 @@ function initializeWorld()
 
 			tiles : [
 				"[ r r r r r r r r r r r r r r r ]",
+				"c f f f f f f f f f f f f f f f c",
+				"c f f f f f f f f f f f f f f f c",
+				"c f f g f f f f f f f f f g f f c",
+				"c f f f f f f g g g f f f f f f c",
+				"c f f f f f f g g g f f f f f f c",
+				"c f f f f f f g g g f f f f f f c",
+				"c f f g f f f f f f f f f g f f c",
+				"c f f f f f f f f f f f f f f f c",
+				"c f f f f f f f f f f f f f f f c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c g f f f f f f f f f f f f f g c",
+				"c f g f f g f f f f f g f f g f c",
+				"c f f g f f f f g f f f f g f f c",
+				"c f f f f f f f g f f f f f f f c",
+				"c f f f f f g g g g g f f f f f c",
+				"c f f f f f f f g f f f f f f f c",
+				"c f f g f f f f g f f f f g f f c",
+				"c f g f f g f f f f f g f f g f c",
+				"c g f f f f f f f f f f f f f g c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c l l l l l l l l l l l l l l l c",
+				"c l g f f f f f f f f f f f g l c",
+				"c l f f f f f f f f f f f f f l c",
+				"c l f f g f f l l l f f g f f l c",
+				"c l f f g f f l l l f f g f f l c",
+				"c l f f g f f l l l f f g f f l c",
+				"c l f f f f f f f f f f f f f l c",
+				"c l g f f f f f f f f f f f g l c",
+				"c l l l l l l l l l l l l l l l c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c f f l f f f f f f f f f l f f c",
+				"c f f l f f f f f f f f f l f f c",
+				"c l l g f f g g l g g f f g l l c",
+				"c f f f f f g f f f g f f f f f c",
+				"c f f f f f l f f f l f f f f f c",
+				"c f f f f f g f f f g f f f f f c",
+				"c l l g f f g g l g g f f g l l c",
+				"c f f l f f f f f f f f f l f f c",
+				"c f f l f f f f f f f f f l f f c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c f f f f f f f f f f f f l f g c",
+				"c f f f g l f f f f f f f f f f c",
+				"c f f f f f f f f f f f f f f f c",
+				"c f g f f f f f g f f f g f f f c",
+				"c f l f f f f f f f l f f f f f c",
+				"c f f f f f f f f f f f f f f f c",
+				"c f f f f l f g f f f f f f f f c",
+				"c f f g f f f f f f f g f f l f c",
+				"c f f f f f f f f f f f f f g f c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c f g f f f f f f g f f f f g g c",
+				"c f f g f f f f f g f f f g g f c",
+				"c f f f g f f f f g f f g f f f c",
+				"c g f f f g f f f g f g f f f f c",
+				"c g f f f f f f f f f f f f f f c",
+				"c g f f f f f g f f f g g g f f c",
+				"c f f f g f f g f f f g f f f f c",
+				"c f f f g f f g f f f g f f f f c",
+				"c f f f g f f f f f f g f f f f c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c l f l f f l f f f f l f f f l c",
+				"c f f f f f f l f f f l f f l f c",
+				"c f f f f f f f l f f f f l f f c",
+				"c l f l f f f f f f f l f f l l c",
+				"c f f f f l f f f f f f f f f f c",
+				"c f f f f f f l f f f l l f f l c",
+				"c l l f f f f f f f f f f f f f c",
+				"c f f f f f f f f f f f f l f f c",
+				"c f f f l f f f l f f f f f l f c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
+
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
 				"c f g f f f f g f f f f l l f f c",
 				"c f g f l f f f f g f f f l g f c",
 				"c f f f g f f l f f g l f f f f c",
@@ -94,10 +227,39 @@ function initializeWorld()
 
 		{
 
-			tiles : [],
-			entities : {
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c f g l f f f f f f f f g l l l c",
+				"c f g f f f f f f f f f g l f l c",
+				"c f g f f g g g g g f f g f f l c",
+				"c f g f f f f f f g f f g f f f c",
+				"c f g l l g f f l g f f g f f f c",
+				"c f g l g f f f g f f g f f f f c",
+				"c f g g f f f g f f g f f f l f c",
+				"c f g f f f g f f g f f f l f f c",
+				"c f f f f g f f f f f f l f f f c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
 
-			}
+		},
+
+		{
+
+			tiles : [
+				"[ r r r r r r r r r r r r r r r ]",
+				"c f f f f f f f f f f f f f f f c",
+				"c f l l l l l f l l l f f l f f c",
+				"c f f f f f f l f f f l f f l f c",
+				"c f l l f f f f f f f f l f f l c",
+				"c f l l f f f l f f f l f f f l c",
+				"c f l l l l f f l l l f f f l f c",
+				"c f l f f l l f f f f f f l f f c",
+				"c f f f l f f l f f f l l f f f c",
+				"c f f f f f f f l l l f f f f f c",
+				"{ r r r r r r r r r r r r r r r }"
+			],
+			entities : new Object()
 
 		}
 
@@ -105,27 +267,36 @@ function initializeWorld()
 
 	for (var i=0; i<levels.length; i++)
 	{
-		for (var y=0; y<levels[i].tiles.length; y++)
-		{
-			levels[i].tiles[y] = (levels[i].tiles[y]).split("");
-			for (var x=0; x<levels[i].tiles[y].length; x++)
-			{
-                var tile = levels[i].tiles[y][x];
-				if (tile == " ")
-				{
-					levels[i].tiles[y].splice(x, 1);
-					x -= 1;
-				}
-                else if (tile != "-")
-                {
-                    levels[i].entities[tile] = new Entity("assets/" + tile + ".png");
-                }
-			}
-		}
 	}
 
 	music = new Audio("assets/audio/edm-detection-mode.mp3");
+	music.loop = true;
 	music.play();
+
+	initializeLevel();
+
+}
+
+function initializeLevel()
+{
+
+	for (var y=0; y<levels[level].tiles.length; y++)
+	{
+		levels[level].tiles[y] = (levels[level].tiles[y]).split("");
+		for (var x=0; x<levels[level].tiles[y].length; x++)
+		{
+            var tile = levels[level].tiles[y][x];
+			if (tile == " ")
+			{
+				levels[level].tiles[y].splice(x, 1);
+				x -= 1;
+			}
+            else if (tile != "-")
+            {
+                levels[level].entities[tile] = new Entity("assets/" + tile + ".png");
+            }
+		}
+	}
 
 	var acc = 5000;
 	var mil = 1000;
@@ -133,12 +304,12 @@ function initializeWorld()
 	var resistance = 0.99
     var big = new Entity("assets/big.png", 0, 0, updateBig, "big", "big", speed, resistance);
 	big.aggressive = true;
-	big.maxHealth = 1100;
+	big.maxHealth = 1100 + 200 * level;
 	big.health = big.maxHealth;
 	big.spawnSafe();
-	levels[0].entities.big = big;
+	levels[level].entities.big = big;
 
-    for (var i=0; i<20; i++)
+    for (var i=0; i < 15+level*2; i++)
     {
 
 		var acc = 6000;
@@ -150,15 +321,19 @@ function initializeWorld()
 		e.maxHealth = 5;
 		e.health = e.maxHealth;
 		e.key = i;
-		// e.loadAnimation("assets/anim/swarm/", 10, 3, undefined, true);
+		e.loadAnimation("assets/anim/swarm/", 10, 2, undefined, true, false);
+		e.width = 50;
+		e.height = 50;
+		e.origin.x = 25;
+		e.origin.y = 25;
 
 		e.spawnSafe();
 
-		levels[0].entities[i] = e;
+		levels[level].entities[i] = e;
 
     }
 
-    controlled = levels[0].entities[0];
+    controlled = levels[level].entities[0];
 
 }
 
@@ -222,6 +397,16 @@ function update(totalTime)
     {
         controlled.yVel -= controlled.speed * delta;
     }
+	if (key("N") && key("L") && controlled.cool <= 0)
+	{
+		level += 1;
+		initializeLevel();
+		controlled.cool = 1000;
+	}
+	if (keys.indexOf(true) != -1)
+	{
+		controlled.animation.paused = false;
+	}
 
 	controlled.xVel *= Math.pow(controlled.resistance, delta);
 	controlled.yVel *= Math.pow(controlled.resistance, delta);
@@ -234,8 +419,8 @@ function update(totalTime)
 
 		knockback = shoot(controlled, mouse.x + camera.x, mouse.y + camera.y, "enemy", 1, 4, 1, 5, 100);
 
-		x += knockback[0];
-		y += knockback[1];
+		x += knockback[0] * delta;
+		y += knockback[1] * delta;
 
 	}
 	if (typeof controlled.cool == "undefined")
@@ -244,7 +429,7 @@ function update(totalTime)
 	}
 	controlled.cool -= delta;
 
-	controlled.handleCollisions(x, y, ["g", "c", "r"]);
+	controlled.handleCollisions(x, y, ["g", "c", "r", "[", "]", "{", "}"]);
 
 	if (controlled.health <= 0)
 	{
@@ -261,6 +446,7 @@ function update(totalTime)
 				if (e.type == "enemy" && e.name != "bullet" && e.health > 0)
 				{
 					controlled = e;
+					controlled.animation.paused = true;
 					break;
 				}
 			}
@@ -272,7 +458,7 @@ function update(totalTime)
 
 	}
 
-	music.volume = 1 - controlled.health / controlled.maxHealth * 0.9;
+	music.volume = 1 - controlled.health / controlled.maxHealth * 0.6;
 
 	if (controlled.collideTile(controlled.x, controlled.y, ["l"]))
 	{
@@ -330,7 +516,9 @@ function updateAI(self, delta)
 
 		if (self.aggressive)
 		{
-			shoot(self, big.x, big.y, "enemy", 1, 4, 1, 5, 100);
+			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 5, 100);
+			x += knockback[0] * delta;
+			y += knockback[1] * delta;
 		}
 		if (typeof self.cool == "undefined")
 		{
@@ -338,17 +526,20 @@ function updateAI(self, delta)
 		}
 		self.cool -= delta;
 
-		collides = ["g", "c", "r", "l"]
-		if (Math.random() < 0.005)
+		collides = ["g", "c", "r", "[", "]", "{", "}", "l"];
+		if (Math.random() < 0.001)
 		{
-			collides = ["g", "c", "r"]
+			collides = ["g", "c", "r", "[", "]", "{", "}"];
 		}
 		if (self.collideTile(self.x, self.y, ["l"]))
 		{
-			collides = ["g", "c", "r"]
+			collides = ["g", "c", "r", "[", "]", "{", "}"];
 			self.health -= 0.1 * delta;
 		}
-		self.handleCollisions(x, y, collides);
+		if (self.handleCollisions(x, y, collides))
+		{
+			self.aggressive = true;
+		}
 
 		if (self.health <= 0)
 		{
@@ -370,8 +561,35 @@ function updateBig(self, delta)
 
 	var center = averageEntity(2, "enemy");
 
-	self.xVel += (self.x < center[0] ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta;
-	self.yVel += (self.y < center[1] ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta;
+	var dX = center[0];
+	var dY = center[1];
+
+	if (Math.random() < 0.5)
+	{
+
+		var target;
+		var count = 0;
+		if (Math.random() < 0.5)
+		{
+			target = controlled;
+		}
+		else
+		{
+			for (var e in levels[level].entities)
+			{
+				if (Math.random() < 1/++count)
+				{
+					target = e;
+				}
+			}
+		}
+		dX = target.x;
+		dY = target.y;
+
+	}
+
+	self.xVel += (self.x < dX ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta;
+	self.yVel += (self.y < dY ? -1 : 1) * (self.aggressive ? -1 : 1) * self.speed * delta;
 
 	self.xVel *= Math.pow(self.resistance, delta);
 	self.yVel *= Math.pow(self.resistance, delta);
@@ -384,29 +602,9 @@ function updateBig(self, delta)
 		if (Math.random() < 0.75)
 		{
 
-			var dX = center[0];
-			var dY = center[1];
-
-			if (Math.random() < 0.6)
-			{
-
-				var target;
-				var count = 0;
-				for (var e in levels[level].entities)
-				{
-					if (Math.random() < 1/++count*(e == controlled ? 5 : 1))
-					{
-						target = e;
-					}
-				}
-				dX = target.x;
-				dY = target.y;
-
-			}
-
-			knockback = shoot(self, center[0], center[1], "big", 1, 4, 1, 7, 150);
-			x += knockback[0];
-			y += knockback[1];
+			knockback = shoot(self, dX, dY, "big", 1, 4, 1, 7, 150);
+			// x += knockback[0] * delta;
+			// y += knockback[1] * delta;
 
 		}
 	}
@@ -419,14 +617,14 @@ function updateBig(self, delta)
 	x += self.xVel * delta;
 	y += self.yVel * delta;
 
-	collides = ["g", "c", "r", "l"]
+	collides = ["g", "c", "r", "[", "]", "{", "}", "l"]
 	if (Math.random() < 0.01)
 	{
-		collides = ["g", "c", "r"]
+		collides = ["g", "c", "r", "[", "]", "{", "}"]
 	}
 	if (self.collideTile(self.x, self.y, ["l"]))
 	{
-		collides = ["g", "c", "r"]
+		collides = ["g", "c", "r", "[", "]", "{", "}"]
 		self.health -= 0.1 * delta;
 	}
 	if (self.handleCollisions(x, y, collides))
@@ -440,7 +638,17 @@ function updateBig(self, delta)
 	if (self.health <= 0)
 	{
 		self.alpha = 0;
-		window.location.href = "win";
+		if (level + 1 < levels.length)
+		{
+			win = new Audio("assets/audio/win.wav");
+			win.play()
+			level += 1;
+			initializeLevel();
+		}
+		else
+		{
+			window.location.href = "win";
+		}
 	}
 
 }
@@ -453,7 +661,7 @@ function updateBullet(self, delta)
 	self.power *= Math.pow(self.resistance, delta);
 	self.alpha = self.power / self.maxPower;
 
-	if (self.alpha <= 0 || self.collideTile(self.x, self.y, ["g", "c", "r"]))
+	if (self.alpha <= 0 || self.collideTile(self.x, self.y, ["g", "c", "r", "[", "]", "{", "}"]))
 	{
 		delete levels[level].entities[self.key];
 	}
@@ -487,8 +695,8 @@ function shoot(entity, towardsX, towardsY, type, speed, accuracy, knockback, pow
 	if (entity.cool <= 0)
 	{
 
-		var startX = entity.x + entity.width / 2;
-		var startY = entity.y + entity.height / 2;
+		var startX = entity.x + entity.origin.x + entity.width / 2;
+		var startY = entity.y + entity.origin.y + entity.height / 2;
 
 		var dX = (towardsX - startX);
 		var dY = (towardsY - startY);
@@ -518,7 +726,7 @@ function shoot(entity, towardsX, towardsY, type, speed, accuracy, knockback, pow
 			bang.play();
 		}
 
-		return [-1 * dX * knockback * delta, -1 * dY * knockback * delta];
+		return [-1 * dX * knockback, -1 * dY * knockback];
 
 	}
 
