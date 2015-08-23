@@ -150,7 +150,7 @@ function initializeWorld()
 		e.maxHealth = 5;
 		e.health = e.maxHealth;
 		e.key = i;
-		e.loadAnimation("assets/anim/swarm/", 10, 3, undefined, true);
+		// e.loadAnimation("assets/anim/swarm/", 10, 3, undefined, true);
 
 		e.spawnSafe();
 

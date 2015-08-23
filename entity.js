@@ -87,11 +87,12 @@ var Entity = (function()
 			var image = new Image();
 			if (frame == 0)
 			{
-				image.addEventListener("load", function() {
-					this.image = image;
-					this.width = image.width;
-					this.height = image.height;
-				}.bind(this));
+				var loadHandler = function() {
+				    this.width = image.width;
+				    this.height = image.height;
+				}.bind(this);
+				image.onload = loadHandler;
+				this.image = image;
 			}
 			image.src = url + String(frame) + suffix;
 			this.animation.images.push(image);
