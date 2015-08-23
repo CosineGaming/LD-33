@@ -17,6 +17,8 @@ var Entity = (function()
 		this.name = backUp(name, "none");
         this.speed = speed;
 		this.resistance = resistance
+		this.width = 0;
+		this.height = 0;
 
 		this.xVel = backUp(xVel, 0);
 		this.yVel = backUp(yVel, 0);
@@ -62,6 +64,11 @@ var Entity = (function()
 	Entity.prototype.loadImage = function(url)
 	{
 		var image = new Image();
+		var loadHandler = function() {
+		    this.width = image.width;
+		    this.height = image.height;
+		}.bind(this);
+		image.onload = loadHandler;
 		image.src = url;
 		this.image = image;
 	};
@@ -81,10 +88,10 @@ var Entity = (function()
 			if (frame == 0)
 			{
 				image.addEventListener("load", function() {
-					this.image = new Object();
-					this.image.width = image.width / tileWidth;
-					this.image.height = image.height / tileHeight;
-				});
+					this.image = image;
+					this.width = image.width;
+					this.height = image.height;
+				}.bind(this));
 			}
 			image.src = url + String(frame) + suffix;
 			this.animation.images.push(image);
@@ -118,7 +125,6 @@ var Entity = (function()
 
 		var anime = this.animation;
 
-		anime.countdown -= quadrantSpeed(this.getQuadrant());
 		if (anime.countdown <= 0)
 		{
 			anime.countdown = anime.frameMultiplier;
@@ -162,9 +168,9 @@ var Entity = (function()
 
 		var topLeft = tilePos(eX, eY);
 		var bottomRight = topLeft;
-		if (typeof this.image != "undefined" && this.image.complete)
+		if (typeof this.width != "undefined")
 		{
-			var bottomRight = tilePos(eX + this.image.width - 0.001, eY + this.image.height - 0.001);
+			var bottomRight = tilePos(eX + this.width, eY + this.height);
 		}
 
 		for (var x=topLeft[0]; x<=bottomRight[0]; x++)
@@ -176,7 +182,6 @@ var Entity = (function()
 				{
 					if (typeof types == "undefined" || types.indexOf(tile) != -1)
 					{
-						if (typeof typels != "undefined") alert("yeah");
 						return new Entity(undefined, x, y, undefined, "tile", tile);
 					}
 				}
@@ -214,13 +219,13 @@ var Entity = (function()
 	Entity.prototype.collideOther = function(other, x, y)
 	{
 
-		var eX = backUp(x, this.image.x);
-		var eY = backUp(y, this.image.y);
+		var eX = backUp(x, this.x);
+		var eY = backUp(y, this.y);
 
-		return (eX < other.x + other.image.width
-			&& other.x < eX + this.image.width
-			&& eY < other.y + other.image.height
-			&& other.y < eY + this.image.height);
+		return (eX < other.x + other.width
+			&& other.x < eX + this.width
+			&& eY < other.y + other.height
+			&& other.y < eY + this.height);
 
 	};
 
@@ -293,13 +298,13 @@ var Entity = (function()
 		{
 			didCollide = true;
 			var width = tileSize;
-			if (byX.image)
+			if (byX.width)
 			{
-				width = byX.image.width;
+				width = byX.width;
 			}
 			this.xVel = 0;
-			this.x = Math.floor(byX.x + width * goingLeft)
-				- this.image.width * goingRight;
+			this.x = byX.x + width * goingLeft
+				- (this.width + 1) * goingRight;
 		}
 		else
 		{
@@ -309,13 +314,13 @@ var Entity = (function()
 		{
 			didCollide = true;
 			var height = tileSize;
-			if (byY.image)
+			if (byY.height)
 			{
-				height = byY.image.height;
+				height = byY.height;
 			}
 			this.yVel = 0;
-			this.y = Math.floor(byY.y + height * goingUp)
-				- this.image.height * goingDown;
+			this.y = byY.y + height * goingUp
+				- (this.height + 1) * goingDown;
 		}
 		else
 		{
