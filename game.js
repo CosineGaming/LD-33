@@ -304,12 +304,12 @@ function initializeLevel()
 	var resistance = 0.99
     var big = new Entity("assets/big.png", 0, 0, updateBig, "big", "big", speed, resistance);
 	big.aggressive = true;
-	big.maxHealth = 1100 + 200 * level;
+	big.maxHealth = 1050 + 300 * level;
 	big.health = big.maxHealth;
 	big.spawnSafe();
 	levels[level].entities.big = big;
 
-    for (var i=0; i < 15+level*2; i++)
+    for (var i=0; i < 14+level*4; i++)
     {
 
 		var acc = 6000;
@@ -459,8 +459,6 @@ function update(totalTime)
 		}
 
 	}
-
-	music.volume = 1 - controlled.health / controlled.maxHealth * 0.6;
 
 	if (controlled.collideTile(controlled.x, controlled.y, ["l"]))
 	{
@@ -653,20 +651,19 @@ function updateBig(self, delta)
 		}
 	}
 
+	music.volume = 1 - self.health / self.maxHealth * 0.9;
+
 }
 
 function updateBullet(self, delta)
 {
 
-	self.x += self.xVel * delta;
-	self.y += self.yVel * delta;
+	var x = self.x;
+	var y = self.y;
+	x += self.xVel * delta;
+	y += self.yVel * delta;
 	self.power *= Math.pow(self.resistance, delta);
 	self.alpha = self.power / self.maxPower;
-
-	if (self.alpha <= 0 || self.collideTile(self.x, self.y, ["g", "c", "r", "a", "b", "y", "z"]))
-	{
-		delete levels[level].entities[self.key];
-	}
 
 	var other = "enemy"
 	if (self.type == "enemy")
@@ -674,7 +671,7 @@ function updateBullet(self, delta)
 		other = "big";
 	}
 
-	other = self.collideWorld(self.x, self.y, [other]);
+	other = self.collideWorld(x, y, [other]);
 
 	if (other)
 	{
@@ -688,6 +685,19 @@ function updateBullet(self, delta)
 		delete levels[level].entities[self.key];
 
 	}
+
+	var solids = ["g", "c", "r", "a", "b", "y", "z"];
+	var tile = self.collideTile(x, y, solids);
+
+	if (other || self.alpha <= 0 || tile)
+	{
+
+		delete levels[level].entities[self.key];
+
+	}
+
+	self.x = x;
+	self.y = y;
 
 }
 

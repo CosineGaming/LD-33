@@ -136,7 +136,10 @@ function renderTile(x, y)
 
 		if (draw)
 		{
+			var alpha = backUp(tile.alpha, 1);
+			game.globalAlpha = alpha;
 			game.drawImage(draw, placeX, placeY);
+			game.globalAlpha = 1;
 		}
 
 	}

@@ -143,9 +143,9 @@ var Entity = (function()
 
 		if (anime.frame >= anime.frames.length)
 		{
-			if (typeof "whenDone" == "function")
+			if (typeof anime.whenDone == "function")
 			{
-				anime.whenDone(anime);
+				anime.whenDone(this);
 			}
 			anime.frame = anime.frames.length - 1;
 			if (typeof anime.repeat != "undefined")
@@ -208,17 +208,12 @@ var Entity = (function()
 			if (levels[level].entities.hasOwnProperty(key))
 			{
 				other = levels[level].entities[key];
-				if (other != this)
+				if (other != this && other.type != "none" && other.name != "bullet" &&
+					(typeof types == "undefined" || types.indexOf(other.type) != -1))
 				{
 					if (this.collideOther(other))
 					{
-						if (other.type != "none")
-						{
-							if (typeof types == "undefined" || types.indexOf(other.type) != -1)
-							{
-								return other;
-							}
-						}
+						return other;
 					}
 				}
 			}
