@@ -24,6 +24,8 @@ var tileSize = 128;
 // var lastSpace = false;
 var resizeTimer = false;
 
+var music;
+
 var controlled;
 
 // Entry point
@@ -122,13 +124,16 @@ function initializeWorld()
 		}
 	}
 
+	music = new Audio("assets/audio/edm-detection-mode.mp3");
+	music.play();
+
 	var acc = 5000;
 	var mil = 1000;
 	var speed = acc / mil / mil;
 	var resistance = 0.99
     var big = new Entity("assets/big.png", 0, 0, updateBig, "big", "big", speed, resistance);
 	big.aggressive = true;
-	big.maxHealth = 700;
+	big.maxHealth = 1200;
 	big.health = big.maxHealth;
 	big.spawnSafe();
 	levels[0].entities.big = big;
@@ -226,7 +231,7 @@ function update(totalTime)
 	if (mouse.active)
 	{
 
-		knockback = shoot(controlled, mouse.x + camera.x, mouse.y + camera.y, "enemy", 1, 4, 1, 1, 100);
+		knockback = shoot(controlled, mouse.x + camera.x, mouse.y + camera.y, "enemy", 1, 4, 1, 5, 100);
 
 		x += knockback[0];
 		y += knockback[1];
@@ -242,6 +247,10 @@ function update(totalTime)
 
 	if (controlled.health <= 0)
 	{
+
+		whimper = new Audio("assets/audio/death.wav");
+		whimper.play();
+
 		delete levels[level].entities[controlled.key];
 		for (var k in levels[level].entities)
 		{
@@ -259,7 +268,10 @@ function update(totalTime)
 		{
 			window.location.href = "lose"
 		}
+
 	}
+
+	music.volume = controlled.health / controlled.maxHealth;
 
 	if (controlled.collideTile(controlled.x, controlled.y, ["l"]))
 	{
@@ -317,7 +329,7 @@ function updateAI(self, delta)
 
 		if (self.aggressive)
 		{
-			shoot(self, big.x, big.y, "enemy", 1, 4, 1, 1, 100);
+			shoot(self, big.x, big.y, "enemy", 1, 4, 1, 5, 100);
 		}
 		if (typeof self.cool == "undefined")
 		{
@@ -391,7 +403,7 @@ function updateBig(self, delta)
 
 			}
 
-			knockback = shoot(self, center[0], center[1], "big", 1, 4, 1, 5, 150);
+			knockback = shoot(self, center[0], center[1], "big", 1, 4, 1, 7, 150);
 			x += knockback[0];
 			y += knockback[1];
 
@@ -497,6 +509,13 @@ function shoot(entity, towardsX, towardsY, type, speed, accuracy, knockback, pow
 		bullet.key = key;
 		levels[level].entities[key] = bullet;
 		entity.cool = cool;
+
+		if (entity == controlled)
+		{
+			var bang = new Audio("assets/audio/bang.wav");
+			bang.volume = 0.1;
+			bang.play();
+		}
 
 		return [-1 * dX * knockback * delta, -1 * dY * knockback * delta];
 
