@@ -133,7 +133,7 @@ function initializeWorld()
 	var resistance = 0.99
     var big = new Entity("assets/big.png", 0, 0, updateBig, "big", "big", speed, resistance);
 	big.aggressive = true;
-	big.maxHealth = 1200;
+	big.maxHealth = 1100;
 	big.health = big.maxHealth;
 	big.spawnSafe();
 	levels[0].entities.big = big;
@@ -271,7 +271,7 @@ function update(totalTime)
 
 	}
 
-	music.volume = controlled.health / controlled.maxHealth;
+	music.volume = 1 - controlled.health / controlled.maxHealth * 0.9;
 
 	if (controlled.collideTile(controlled.x, controlled.y, ["l"]))
 	{
@@ -486,8 +486,8 @@ function shoot(entity, towardsX, towardsY, type, speed, accuracy, knockback, pow
 	if (entity.cool <= 0)
 	{
 
-		var startX = entity.x + entity.image.width / 2;
-		var startY = entity.y + entity.image.height / 2;
+		var startX = entity.x + entity.width / 2;
+		var startY = entity.y + entity.height / 2;
 
 		var dX = (towardsX - startX);
 		var dY = (towardsY - startY);
