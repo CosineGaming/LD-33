@@ -697,6 +697,7 @@ function updateBig(self, delta)
 		else
 		{
 			window.location.href = "win";
+			return;
 		}
 	}
 
