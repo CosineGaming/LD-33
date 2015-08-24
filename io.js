@@ -75,18 +75,22 @@ function mouseDown(event)
 	mouse.button = event.button;
 	mouse.active = true;
 
-	var fullScreen = backUp(document.mozFullScreen, false);
-	if (typeof document.webkitIsFullScreen != "undefined")
+	if (!window.haveTried)
 	{
-		fullScreen = document.webkitIsFullScreen;
+		var fullScreen = backUp(document.mozFullScreen, false);
+		if (typeof document.webkitIsFullScreen != "undefined")
+		{
+			fullScreen = document.webkitIsFullScreen;
+		}
+		if (!fullScreen)
+		{
+			var body = document.getElementsByTagName("body")[0];
+			if (body.requestFullScreen) body.requestFullScreen();
+			if (body.mozRequestFullScreen) body.mozRequestFullScreen();
+			window.haveTried = true;
+			mouse.active = false;
+		}
 	}
-	if (!fullScreen)
-	{
-		var body = document.getElementsByTagName("body")[0];
-		if (body.requestFullScreen) body.requestFullScreen();
-		if (body.mozRequestFullScreen) body.mozRequestFullScreen();
-	}
-	mouse.active = false;
 
 }
 
