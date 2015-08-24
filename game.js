@@ -27,6 +27,7 @@ var resizeTimer = false;
 var music;
 
 var collideKeys;
+var bulletIs = [];
 
 var controlled;
 
@@ -392,7 +393,11 @@ function render(updateTime)
 
 	for (var i=0; i<levels[level].bullets.length; i++)
 	{
-		levels[level].bullets[i].render();
+		var b = levels[level].bullets[i];
+		if (b)
+		{
+			b.render();
+		}
 	}
 
 	if (displayFps)
@@ -513,7 +518,10 @@ function update(totalTime)
 	for (var i=0; i<levels[level].bullets.length; i++)
 	{
 		var b = levels[level].bullets[i];
-		updateBullet(b, delta);
+		if (b)
+		{
+			b.update(b, delta);
+		}
 	}
 
 	collideKeys = undefined;
@@ -712,40 +720,29 @@ function updateBullet(self, delta)
 		other = "big";
 	}
 
-	if (self.distanceX > 100 || self.distanceY > 100 || typeof self.distanceX == "undefined")
+	other = self.collideWorld(x, y, [other]);
+
+	if (other)
 	{
 
-		other = self.collideWorld(x, y, [other]);
-
-		if (other)
+		other.health -= self.power;
+		if (Math.random() < 0.5)
 		{
-
-			other.health -= self.power;
-			if (Math.random() < 0.5)
-			{
-				other.aggressive = false;
-			}
-
-			delete levels[level].entities[self.key];
-
+			other.aggressive = false;
 		}
-
-		var solids = ["g", "c", "r", "a", "b", "y", "z"];
-		var tile = self.collideTile(x, y, solids);
-
-		if (other || self.alpha <= 0 || tile)
-		{
-
-			delete levels[level].entities[self.key];
-
-		}
-
-		self.distanceX = 0;
-		self.distanceY = 0;
 
 	}
-	self.distanceX += self.xVel * delta;
-	self.distanceY += self.yVel * delta;
+
+	var solids = ["g", "c", "r", "a", "b", "y", "z"];
+	var tile = self.collideTile(x, y, solids);
+
+	if (other || self.alpha <= 0 || tile)
+	{
+
+		delete levels[level].bullets[self.key];
+		bulletIs.push(self.key);
+
+	}
 
 	self.x = x;
 	self.y = y;
@@ -774,12 +771,25 @@ function shoot(entity, towardsX, towardsY, type, speed, accuracy, knockback, pow
 		{
 			image = "assets/big-bullet.png";
 		}
+
 		var bullet = new Entity(image, startX, startY, updateBullet, type, "bullet", 0, 0.996, dX, dY);
 		bullet.maxPower = power;
 		bullet.power = bullet.maxPower;
 		var key = Math.random();
 		bullet.key = key;
-		levels[level].bullets.push(bullet);
+
+		if (bulletIs.length)
+		{
+			var i = bulletIs.splice(0, 1)[0];
+			bullet.key = i;
+			levels[level].bullets[i] = bullet;
+		}
+		else
+		{
+			bullet.key = levels[level].bullets.length;
+			levels[level].bullets.push(bullet);
+		}
+
 		entity.cool = cool;
 
 		if (entity == controlled)
