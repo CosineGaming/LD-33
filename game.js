@@ -371,7 +371,7 @@ function render(updateTime)
 
 	}
 
-	var displayFps = true;
+	var displayFps = false;
 
 	for (var clear=0; clear<clears.length; clear+=4)
 	{
@@ -565,7 +565,7 @@ function updateAI(self, delta)
 
 		if (self.aggressive)
 		{
-			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 5, 100);
+			knockback = shoot(self, big.x, big.y, "enemy", 1, 4, 1, 10, 200);
 			x += knockback[0] * delta;
 			y += knockback[1] * delta;
 		}
