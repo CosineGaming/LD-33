@@ -309,12 +309,12 @@ function initializeLevel()
 	var resistance = 0.99
     var big = new Entity("assets/big.png", 0, 0, updateBig, "big", "big", speed, resistance);
 	big.aggressive = true;
-	big.maxHealth = 1000 + 300 * level;
+	big.maxHealth = 1050 + 300 * level;
 	big.health = big.maxHealth;
 	big.spawnSafe();
 	levels[level].entities.big = big;
 
-    for (var i=0; i < 14+level*4; i++)
+    for (var i=0; i < 14+level*5; i++)
     {
 
 		var acc = 6000;
@@ -323,7 +323,7 @@ function initializeLevel()
 
 		e = new Entity(undefined, 0, 0, updateAI, "enemy", "swarm", speed, resistance);
 		e.aggressive = true;
-		e.maxHealth = 5;
+		e.maxHealth = 7;
 		e.health = e.maxHealth;
 		e.key = i;
 		e.loadAnimation("assets/anim/swarm/", 10, 2, undefined, true, false);
@@ -651,7 +651,7 @@ function updateBig(self, delta)
 		if (Math.random() < 0.75)
 		{
 
-			knockback = shoot(self, dX, dY, "big", 1, 4, 1, 7, 150);
+			knockback = shoot(self, dX, dY, "big", 1, 2, 1, 7, 150);
 			// x += knockback[0] * delta;
 			// y += knockback[1] * delta;
 
@@ -767,13 +767,21 @@ function shoot(entity, towardsX, towardsY, type, speed, accuracy, knockback, pow
 		dX += (Math.random() - 0.5) / accuracy;
 		dY += (Math.random() - 0.5) / accuracy;
 
+		var bullet = new Entity(undefined, startX, startY, updateBullet, type, "bullet", 0, 0.996, dX, dY);
+
 		var image = "assets/bullet.png";
+		var setWidth = false;
 		if (type == "big")
 		{
 			image = "assets/big-bullet.png";
+			bullet.origin.x = 6;
+			bullet.origin.y = 6;
+			bullet.width = 20;
+			bullet.height = 20;
+			setWidth = true;
 		}
+		bullet.loadImage(image, setWidth);
 
-		var bullet = new Entity(image, startX, startY, updateBullet, type, "bullet", 0, 0.996, dX, dY);
 		bullet.maxPower = power;
 		bullet.power = bullet.maxPower;
 		var key = Math.random();

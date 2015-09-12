@@ -67,14 +67,17 @@ var Entity = (function()
 
 	};
 
-	Entity.prototype.loadImage = function(url)
+	Entity.prototype.loadImage = function(url, doNotSetWidth)
 	{
 		var image = new Image();
-		var loadHandler = function() {
-		    this.width = image.width;
-		    this.height = image.height;
-		}.bind(this);
-		image.onload = loadHandler;
+		if (!doNotSetWidth)
+		{
+			var loadHandler = function() {
+			    this.width = image.width;
+			    this.height = image.height;
+			}.bind(this);
+			image.onload = loadHandler;
+		}
 		image.src = url;
 		this.image = image;
 	};
